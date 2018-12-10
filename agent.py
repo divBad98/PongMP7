@@ -129,12 +129,13 @@ class Agent:
         possible_ns = self.N[ball_x, ball_y, vel_x, vel_y, paddle_y]
         for action in self._actions:
             q_val = possible_qs[action + 1]
-            n_val = possible_ns[action + 1]
-            if n_val < self.Ne:
-                #Since this is guaranteed to be the most optimistic, it's clearly largest
-                best_action = action
-                break
-            elif not action_found or best_action_f < q_val:
+            if self._train:
+                n_val = possible_ns[action + 1]
+                if n_val < self.Ne:
+                    #Since this is guaranteed to be the most optimistic, it's clearly largest
+                    best_action = action
+                    break
+            if not action_found or best_action_f < q_val:
                 best_action_f = q_val
                 best_action = action
                 action_found = True
